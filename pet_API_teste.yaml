@@ -1,103 +1,68 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
-  title: Pet API
+  title: Pet Api
   description: Cadastro de Pet's
   version: "1.0.0"
-# the domain of the service
-host: api.pet.com
-# array of all schemes that your API supports
-schemes:
-  - https
-# will be prefixed to all paths
-basePath: /v1
+  
 produces:
   - application/json
+
 paths:
-  /pets:
+  /{petId}:
     get:
       summary: Pet informations
-      description: |
-        returns informations about the pet's
+      description: returns informations about the pet
       parameters:
-        - name: Id
-          in: query
-          description: Id do pet.
-          required: true
+        - name: petId
+          in: path
           type: number
           format: double
-          
-        - name: Nome
-          in: query
-          description: Nome do pet
+          description: Id do pet
           required: true
-          type: string
-          format: string
-          
-        - name: Especie
-          in: query
-          description: Especie do pet
-          required: true
-          type: string
-          format: string
-      
-      tags:
-        - Pets
       responses:
-        200:
-          description: An array of pet's
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Pet'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
+        '200':
+          description: Operation sucsessfull
+          
+    
+  /newPet:
     post:
       summary: create a new pet
-      description: asdfasdf
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
         - name: pet
           in: body
-          description: haçsldjfh
+          description: add a new pet
+          schema:
+            $ref: '#/definitions/Pet'
           required: true
-          schema:
-            $ref: '#/definitions/Pet'
       responses:
-        '200': 
-          description: pet responses
-          schema:
-            $ref: '#/definitions/Pet'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-            
+        200:
+          description: Create a new Pet
+     
+  /removePet/{petId}:
+    post:
+      summary: Delete a pet
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: petId
+          in: path
+          type: number
+          format: double
+          required: true
+      responses:
+        200:
+          description: Delete a pet
+          
 definitions:
-
   Pet:
     type: object
     properties:
-      pet_id:
-        type: number
-        description: Identificador único do pet
       name:
         type: string
-        description: Nome do pet.
-      especie:
-        type: string
-        description: Espécie do pet.
-      
   
-  Error:
-    type: object
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
-      fields:
-        type: string
